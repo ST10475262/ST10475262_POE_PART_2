@@ -49,7 +49,7 @@
             // 
             txtInput.Location = new Point(12, 614);
             txtInput.Name = "txtInput";
-            txtInput.Size = new Size(861, 27);
+            txtInput.Size = new Size(899, 27);
             txtInput.TabIndex = 1;
             // 
             // btnSend
