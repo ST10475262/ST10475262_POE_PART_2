@@ -1,49 +1,42 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Numerics;
 using System.Text;
 
-namespace ST10475262_POE_PART_1
+namespace ST10475262_POE_PART_2
 {
+
+    public delegate string ResponseDelegate(string input); //delegate that represents any method which takes a string input and returns a string response
+
 
     public class RobotResponses
     {
         static Random rand = new Random();//global randomizer for responses
         static string botName = "Cypherr: "; //global variable to store the bot's name
-        
-        
-        static void TypeResponse(string message, int delay = 25)//types out the bot's responses character by character over a period of time
-        {
-            foreach (char c in message)
-            {
-                Console.Write(c);
-                System.Threading.Thread.Sleep(delay);
-            }
-            Console.WriteLine();
-        }
+        public static Dictionary<string, string> memory = new Dictionary<string, string>(); //stores things the bot remembers about the user
 
-        /*public static bool Hello(string input)//metjod to handle user greetings
+        public static string Hello(string input) //method to handle user greetings
         {
             if (input.Contains("hi") || input.Contains("hello") || input.Contains("hey"))
             {
-                Console.ForegroundColor = ConsoleColor.Cyan;
-
-                System.Threading.Thread.Sleep(1000);//a slight delay before the chatbot responds
-
+                //check if we already remember the user's name to personalise the greeting
+                string name = "";
+                if (memory.ContainsKey("name")) //if the bot has already stored the user's name
+                {
+                    name = " " + memory["name"]; //retrieve their name from memory and add it
+                }
 
                 //an array to store responses to questions related to greetings
-                string[] responses ={$"hi {ASCIIArt.name}, hope you're doing great! Ready to talk cybersecurity?",
-                                     $"hey {ASCIIArt.name}! Let's talk cybersecurity!!",
-                                     $"hello {ASCIIArt.name} I hope you're doing great! Ready to talk about cybersecurity?"};
+                string[] responses = { "hi" + name + "! Hope you're doing great! Ready to talk cybersecurity?",
+                                       "hey" + name + "! Let's talk cybersecurity!!",
+                                       "hello" + name + "! Hope you're doing great! Ready to talk about cybersecurity?" };
 
-                TypeResponse($"{botName} " + responses[rand.Next(responses.Length)]);//selects a random response from the array(0,1,2)
-
-                Console.ResetColor();
-                return true;
+                return botName + ": " + responses[rand.Next(responses.Length)]; //selects a random response from the array
             }
-            return false;
-        }*/
+            return ""; //return an empty string to signal that this method did not match - the main form checks for empty string
+        }
 
-        public static bool Greeting(string input)
+        public static string Greeting(string input)
         {
             if (input.Contains("how are you") || input.Contains("how's it going") || input.Contains("how are you doing"))
             {
@@ -58,15 +51,14 @@ namespace ST10475262_POE_PART_1
                                      "Doing great! Ready to talk about cybersecurity?",
                                      "I'm good! How can I help you stay safe online?"};
 
-                TypeResponse($"{botName} " + responses[rand.Next(responses.Length)]);//selects a random response from the array(0,1,2,3)
 
                 Console.ResetColor();
-                return true;
+                return botName + ": " + responses[rand.Next(responses.Length)];
             }
-            return false;
+            return "";
         }
 
-        public static bool Purpose(string input)//method to state the purpose / use of the bot
+        public static string Purpose(string input)//method to state the purpose / use of the bot
         {
             if (input.Contains("purpose") || input.Contains("what do you do") || input.Contains("what can you do"))
             {
@@ -82,15 +74,15 @@ namespace ST10475262_POE_PART_1
                                      "I provide tips on staying safe online.",
                                      "I'm here to answer questions about internet safety."};
 
-                TypeResponse($"{botName} " + responses[rand.Next(responses.Length)]);//selects a random response from the array(0,1,2)
+                
 
                 Console.ResetColor();
-                return true;
+                return botName + ": " + responses[rand.Next(responses.Length)];
             }
-            return false;
+            return "";
         }
 
-        public static bool Help(string input)// method to give the user topics to question the bot about
+        public static string Help(string input)// method to give the user topics to question the bot about
         {
             if (input.Contains("what can i ask") || input.Contains("help with") || input.Contains("help"))
             {
@@ -102,16 +94,14 @@ namespace ST10475262_POE_PART_1
                                   "\t\t\t\t HELP\n" +
                                   "=========================================================================================");
 
-                TypeResponse($"{botName} You can ask me about passwords, password managers, 2FA(Two-Factor Authentication),\n" +
-                                  "phishing, malware, antiviruses, social engrinnering, data privacy and safe browsing.");
-
                 Console.ResetColor();
-                return true;
+                return botName + ": " + "You can ask me about passwords, password managers, 2FA(Two - Factor Authentication),\n" +
+                                  "phishing, malware, antiviruses, social engrinnering, data privacy and safe browsing.";
             }
-            return false;
+            return "";
         }
 
-        public static bool Passwords(string input)
+        public static string Passwords(string input)
         {
             if (input.Contains("password") || input.Contains("password safety"))//method to respond to password safety
             {
@@ -142,15 +132,15 @@ namespace ST10475262_POE_PART_1
                                       "Enable two-factor authentication (2FA) wherever possible, as it adds an extra layer of\n" +
                                       "protection beyond just your password."};
 
-                TypeResponse($"{botName} " + responses[rand.Next(responses.Length)]);
+                
 
                 Console.ResetColor();
-                return true;
+                return botName + ": " + responses[rand.Next(responses.Length)];
             }
-            return false;
+            return "";
         }
 
-        public static bool PasswordManagers(string input)//method to respond to password managers
+        public static string PasswordManagers(string input)//method to respond to password managers
         {
             if (input.Contains("password manager"))
             {
@@ -176,15 +166,15 @@ namespace ST10475262_POE_PART_1
                                        "It helps you create long, complex passwords without needing to remember them.\n\n" +
                                        "This is one of the easiest ways to improve your overall cybersecurity."};
 
-                TypeResponse($"{botName} " + responses[rand.Next(responses.Length)]);
+                
 
                 Console.ResetColor();
-                return true;
+                return botName + ": " + responses[rand.Next(responses.Length)];
             }
-            return false;
+            return "";
         }
 
-        public static bool TwoFactorAuthentication(string input)//method to respond to two-factor authentication
+        public static string TwoFactorAuthentication(string input)//method to respond to two-factor authentication
         {
             if (input.Contains("2fa") || input.Contains("two factor") || input.Contains("two-factor"))
             {
@@ -209,15 +199,15 @@ namespace ST10475262_POE_PART_1
                                      "and something you have (like your phone).\n\n" +
                                      "Always enable it on email, banking, and social media accounts."};
 
-                TypeResponse($"{botName} " + responses[rand.Next(responses.Length)]);
+                
 
                 Console.ResetColor();
-                return true;
+                return botName + ": " + responses[rand.Next(responses.Length)];
             }
-            return false;
+            return "";
         }
 
-        public static bool Phishing(string input)//method to respond to phishing
+        public static string Phishing(string input)//method to respond to phishing
         {
             if (input.Contains("phishing"))
             {
@@ -241,15 +231,15 @@ namespace ST10475262_POE_PART_1
                                      "These messages try to make you panic and act without thinking.\n\n" +
                                      "Always double-check URLs and confirm requests directly with the organisation."};
 
-                TypeResponse($"{botName} " + responses[rand.Next(responses.Length)]);
+                
 
                 Console.ResetColor();
-                return true;
+                return botName + ": " + responses[rand.Next(responses.Length)];
             }
-            return false;
+            return "";
         }
 
-        public static bool Malware(string input)//method to respond to malware
+        public static string Malware(string input)//method to respond to malware
         {
             if (input.Contains("malware") || input.Contains("virus"))
             {
@@ -275,15 +265,15 @@ namespace ST10475262_POE_PART_1
                                      "Spyware secretly tracks your activity, while trojans disguise themselves as safe programs.\n\n" +
                                      "Keeping backups of your data and avoiding suspicious downloads can protect you."};
 
-                TypeResponse($"{botName} " + responses[rand.Next(responses.Length)]);
+                
 
                 Console.ResetColor();
-                return true;
+                return botName + ": " + responses[rand.Next(responses.Length)];
             }
-            return false;
+            return "";
         }
 
-        public static bool Antivirues(string input)//method to respond to antiviruses
+        public static string Antivirus(string input)//method to respond to antiviruses
         {
             if (input.Contains("antivirus"))
             {
@@ -307,15 +297,15 @@ namespace ST10475262_POE_PART_1
                                      "Enabling real-time protection and scheduling automatic scans\n" +
                                      "can significantly reduce your chances of infection."};
 
-                TypeResponse($"{botName} " + responses[rand.Next(responses.Length)]);
+                
 
                 Console.ResetColor();
-                return true;
+                return botName + ": " + responses[rand.Next(responses.Length)];
             }
-            return false;
+            return "";
         }
 
-        public static bool SocialEngineering(string input)//method to respond to social engineering
+        public static string SocialEngineering(string input)//method to respond to social engineering
         {
             if (input.Contains("social engineering"))
             {
@@ -342,15 +332,15 @@ namespace ST10475262_POE_PART_1
                                      "Legitimate organisations will never ask for this information directly.\n\n" +
                                      "Never share confidential data with unverified sources."};
 
-                TypeResponse($"{botName} " + responses[rand.Next(responses.Length)]);
+                
 
                 Console.ResetColor();
-                return true;
+                return botName + ": " + responses[rand.Next(responses.Length)];
             }
-            return false;
+            return "";
         }
 
-        public static bool DataPrivacy(string input)//method to respond to data privacy
+        public static string DataPrivacy(string input)//method to respond to data privacy
         {
             if (input.Contains("data privacy") || input.Contains("privacy"))
             {
@@ -374,16 +364,16 @@ namespace ST10475262_POE_PART_1
                                      "Avoid public Wi-Fi for sensitive transactions and use trusted applications.\n" +
                                      "Being cautious online helps keep your information safe."};
 
-                TypeResponse($"{botName} " + responses[rand.Next(responses.Length)]);
+                
 
                 Console.ResetColor();
-                return true;
+                return botName + ": " + responses[rand.Next(responses.Length)];
             }
-            return false;
+            return "";
         }
 
 
-        public static bool SafeBrowsing(string input)
+        public static string SafeBrowsing(string input)
         {
             if (input.Contains("safe browsing") || input.Contains("browse safely")) //method to respond to safely browsing the internet
             {
@@ -407,12 +397,12 @@ namespace ST10475262_POE_PART_1
                                      "Look out for signs like poor design, strange URLs, or unexpected downloads.\n" +
                                      "Using security tools and updated browsers improves your safety online."};
 
-                TypeResponse($"{botName} " + responses[rand.Next(responses.Length)]);
+                
 
                 Console.ResetColor();
-                return true;
+                return botName + ": " + responses[rand.Next(responses.Length)];
             }
-            return false;
+            return "";
         }
 
 
@@ -425,12 +415,12 @@ namespace ST10475262_POE_PART_1
                                  "Please rephrase your question, I can help with passwords, phishing, and online safety.",
                                  "Try asking about cybersecurity topics."};
 
-            TypeResponse($"{botName} " + responses[rand.Next(responses.Length)]);//selects a random response from the array when the prompt is blank not in the specified topics
+            
             Console.ResetColor();
         }
 
 
-        public static bool Exit(string input)//method to terminate the conversation
+        public static string Exit(string input)//method to terminate the conversation
         {
             if (input.Contains("exit") || input.Contains("quit"))
             {
@@ -444,9 +434,9 @@ namespace ST10475262_POE_PART_1
 
 
                 Console.ResetColor();
-                return true;
+                return botName + ": " + responses[rand.Next(responses.Length)];
             }
-            return false;
+            return "";
         }
     }
 }
