@@ -406,37 +406,31 @@ namespace ST10475262_POE_PART_2
         }
 
 
-        public static void DefaultResponse() //method to handle exceptions such as questions outside the bot's scope and blank questions
+        public static string DefaultResponse() //method to handle inputs that don't match any known keyword
         {
-            Console.ForegroundColor = ConsoleColor.Red;
+            string[] responses = { "I'm not sure I understand. Try asking about cybersecurity.",
+                                   "Could you rephrase that? I can help with passwords, phishing, and online safety.",
+                                   "Please rephrase your question. Try asking about passwords, phishing, or malware.",
+                                   "Try asking about a cybersecurity topic. Type 'help' to see what I can assist with." };
 
-            string[] responses ={"I'm not sure I understand. Try asking about cybersecurity.",
-                                 "Could you rephrase that?",
-                                 "Please rephrase your question, I can help with passwords, phishing, and online safety.",
-                                 "Try asking about cybersecurity topics."};
-
-            
-            Console.ResetColor();
+            return botName + ": " + responses[rand.Next(responses.Length)]; //selects a random default response from the array
         }
 
 
-        public static string Exit(string input)//method to terminate the conversation
+        public static string Exit(string input) //method to handle when the user wants to leave
         {
-            if (input.Contains("exit") || input.Contains("quit"))
+            if (input.Contains("exit") || input.Contains("quit") || input.Contains("bye") || input.Contains("goodbye"))
             {
-                Console.ForegroundColor = ConsoleColor.DarkGreen;
+                //check if we remember the user's name for a personalised goodbye
+                string name = "";
+                if (memory.ContainsKey("name"))
+                {
+                    name = " " + memory["name"]; //retrieve their name from memory
+                }
 
-                System.Threading.Thread.Sleep(1000);//a slight delay before the chatbot responds
-
-                Console.WriteLine("=========================================================================================");
-                TypeResponse("\t\t\t\tGoodbye! Stay safe online.");
-                Console.WriteLine("=========================================================================================");
-
-
-                Console.ResetColor();
-                return botName + ": " + responses[rand.Next(responses.Length)];
+                return "EXIT|" + botName + ": Goodbye" + name + "! Stay safe online."; //EXIT| is a prefix the form checks for to disable the input box
             }
-            return "";
+            return ""; //return empty string if keyword not found
         }
     }
 }

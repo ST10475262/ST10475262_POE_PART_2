@@ -40,10 +40,16 @@
             // 
             // panelDisplay
             // 
-            panelDisplay.Location = new Point(12, 188);
+            panelDisplay.AutoScroll = true;
+            panelDisplay.BackColor = Color.Black;
+            panelDisplay.FlowDirection = FlowDirection.TopDown;
+            panelDisplay.ForeColor = Color.White;
+            panelDisplay.Location = new Point(0, 188);
             panelDisplay.Name = "panelDisplay";
-            panelDisplay.Size = new Size(1078, 400);
+            panelDisplay.Size = new Size(1112, 410);
             panelDisplay.TabIndex = 0;
+            panelDisplay.WrapContents = false;
+            panelDisplay.Paint += panelDisplay_Paint;
             // 
             // txtInput
             // 

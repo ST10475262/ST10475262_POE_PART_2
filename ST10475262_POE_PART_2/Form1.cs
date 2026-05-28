@@ -1,4 +1,5 @@
 using ST10475262_POE_PART_2;
+using System.Media;
 
 namespace ST10475262_POE_PART_2
 {
@@ -9,7 +10,8 @@ namespace ST10475262_POE_PART_2
         {
             InitializeComponent();
             SetupDelegateList();
-
+            ShowWelcomeMessage();
+            PlayStartupSound();
         }
 
         private void SetupDelegateList() //method to fill the delegate list with all our topic methods
@@ -41,6 +43,13 @@ namespace ST10475262_POE_PART_2
         private void AddBotMessage(string message) //adds a bot message to the left side of the chat
         {
             Panel messagePanel = CreateMessagePanel(message, isBotMessage: true); //create a left-aligned panel
+            panelDisplay.Controls.Add(messagePanel); //add the panel to the chat flow
+            ScrollToBottom(); //scroll down so the new message is visible
+        }
+
+        private void AddUserMessage(string message) //adds a user message to the right side of the chat
+        {
+            Panel messagePanel = CreateMessagePanel(message, isBotMessage: false); //create a right-aligned panel
             panelDisplay.Controls.Add(messagePanel); //add the panel to the chat flow
             ScrollToBottom(); //scroll down so the new message is visible
         }
@@ -116,12 +125,83 @@ namespace ST10475262_POE_PART_2
             }
         }
 
+        private void PlayStartupSound() //method to play the startup sound from part 1
+        {
+            try
+            {
+                if (OperatingSystem.IsWindows())
+                {
+                    string wavPath = @"C:\Users\HPP\source\repos\ST10475262_POE_PART_2\ST10475262_POE_PART_2\cypherr.wav";
+
+                    if (System.IO.File.Exists(wavPath))
+                    {
+                        SoundPlayer greeting = new SoundPlayer(wavPath);
+                        greeting.Load();
+                        greeting.Play();
+                    }
+                }
+            }
+            catch
+            {
+                //continue without sound if it fails to play
+            }
+        }
+
         private void Form1_Load(object sender, EventArgs e)
         {
 
         }
 
         private void button1_Click(object sender, EventArgs e)
+        {
+            string userInput = txtInput.Text.Trim(); //get the text from the input box and remove extra spaces
+
+            if (userInput == "") //if the user sent nothing, do nothing
+            {
+                return;
+            }
+
+            AddUserMessage(userInput); //display the user's message on the RIGHT side of the chat
+            txtInput.Clear();          //clear the input box after sending
+
+            string botResponse = ""; //will hold the bot's response
+
+            // Loop through every delegate in our list and call it with the user's input.
+            // If a method returns a non-empty string, it means it matched - use that response and stop.
+            string lowercaseInput = userInput.ToLower(); //convert input to lowercase so keywords match regardless of capitalisation
+
+            foreach (ResponseDelegate handler in responseHandlers) //loop through all our registered delegate methods
+            {
+                string result = handler(lowercaseInput); //call the method via the delegate
+
+                if (result != "") //if the method returned a response (not empty), it matched
+                {
+                    botResponse = result; //store the matched response
+                    break; //stop looping 
+                }
+            }
+
+            //if none of the methods matched, use the default response
+            if (botResponse == "")
+            {
+                botResponse = RobotResponses.DefaultResponse(); //call the default/fallback response
+            }
+
+            //check if the response starts with "EXIT|" which means the user wants to quit
+            if (botResponse.StartsWith("EXIT|"))
+            {
+                string goodbyeMessage = botResponse.Replace("EXIT|", ""); //remove the EXIT| prefix
+                AddBotMessage(goodbyeMessage); //show the goodbye message
+                txtInput.Enabled = false;   //disable the input box so the user can't type anymore
+                btnSend.Enabled = false;    //disable the send button
+            }
+            else
+            {
+                AddBotMessage(botResponse); //display the bot's response on the LEFT side of the chat
+            }
+        }
+
+        private void panelDisplay_Paint(object sender, PaintEventArgs e)
         {
 
         }
