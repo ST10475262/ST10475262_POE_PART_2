@@ -47,8 +47,7 @@ namespace ST10475262_POE_PART_2
             {
                 
 
-                System.Threading.Thread.Sleep(1000);//a slight delay before the chatbot responds
-
+               
 
                 //an array to store responses to questions related to greetings
                 string[] responses ={"I'm running smoothly! Ready to discuss cybersecurity?",
@@ -68,12 +67,6 @@ namespace ST10475262_POE_PART_2
             if (input.Contains("purpose") || input.Contains("what do you do") || input.Contains("what can you do"))
             {
                 
-
-                System.Threading.Thread.Sleep(1000);//a slight delay before the chatbot responds
-
-                Console.WriteLine("=========================================================================================\n" +
-                                  "\t\t\t\t WHAT'S MY PURPOSE\n" +
-                                  "=========================================================================================");
                 //the array storing responses to the specified keywords
                 string[] responses ={"My purpose is to help people learn about cybersecurity.",
                                      "I provide tips on staying safe online.",
@@ -92,13 +85,6 @@ namespace ST10475262_POE_PART_2
             if (input.Contains("what can i ask") || input.Contains("help with") || input.Contains("help"))
             {
                 
-
-                System.Threading.Thread.Sleep(1000);//a slight delay before the chatbot responds
-
-                Console.WriteLine("=========================================================================================\n" +
-                                  "\t\t\t\t HELP\n" +
-                                  "=========================================================================================");
-
                 
                 return " " + "You can ask me about passwords, password managers, 2FA(Two - Factor Authentication),\n" +
                                   "phishing, malware, antiviruses, social engrinnering, data privacy and safe browsing.";
@@ -121,12 +107,6 @@ namespace ST10475262_POE_PART_2
                 {
                     prefix = memory["name"] + ", " + prefix;
                 }
-
-                System.Threading.Thread.Sleep(1000); //a slight delay before the chatbot responds
-
-                Console.WriteLine("=========================================================================================\n" +
-                                  "\t\t\t\t PASSWORD SAFETY\n" +
-                                  "=========================================================================================");
 
                 string[] responses = {"When creating a password, ALWAYS avoid using personal information such as your name, birthdate,\n" +
                                       "etc. Use a combination of uppercase and lowercase letters, numbers, and special characters to \n" +
@@ -168,12 +148,6 @@ namespace ST10475262_POE_PART_2
                     prefix = "As someone interested in password managers, "; //use recalled memory to personalise the response
                 }
 
-                System.Threading.Thread.Sleep(1000);
-
-                Console.WriteLine("=========================================================================================\n" +
-                                  "\t\t\t\t PASSWORD MANAGERS\n" +
-                                  "=========================================================================================");
-
                 string[] responses =  {"A password manager securely stores all your passwords in one place.\n" +
                                        "You only need to remember one master password to access everything.\n\n" +
                                        "It can also generate strong, unique passwords for each account,\n" +
@@ -209,11 +183,6 @@ namespace ST10475262_POE_PART_2
                     prefix = "As someone interested in 2FA, "; 
                 }
 
-                System.Threading.Thread.Sleep(1000);
-
-                Console.WriteLine("=========================================================================================\n" +
-                                  "\t\t\t\t TWO-FACTOR AUTHENTICATION\n" +
-                                  "=========================================================================================");
 
                 string[] responses ={"Two-Factor Authentication (2FA) adds an extra layer of security to your accounts.\n" +
                                      "In addition to your password, you must provide a second form of verification.\n\n" +
@@ -249,11 +218,6 @@ namespace ST10475262_POE_PART_2
                     prefix = "As someone interested in phishing, "; //use recalled memory to personalise the response
                 }
 
-                System.Threading.Thread.Sleep(1000);
-
-                Console.WriteLine("=========================================================================================\n" +
-                                  "\t\t\t\t PHISHING\n" +
-                                  "=========================================================================================");
 
                 string[] responses ={"Phishing is a cyber attack where attackers trick you into revealing sensitive information.\n" +
                                      "They often pretend to be trusted organisations through emails or messages.\n\n" +
@@ -288,11 +252,7 @@ namespace ST10475262_POE_PART_2
                     prefix = "As someone interested in malware, "; //use recalled memory to personalise the response
                 }
 
-                System.Threading.Thread.Sleep(1000);
 
-                Console.WriteLine("=========================================================================================\n" +
-                                  "\t\t\t\t MALWARE AND VIRUSES\n" +
-                                  "=========================================================================================");
 
                 string[] responses ={"Malware is malicious software designed to harm your device or steal your data.\n\n" +
                                      "It includes viruses, worms, trojans, ransomware, spyware, and adware.\n" +
@@ -329,11 +289,7 @@ namespace ST10475262_POE_PART_2
                     prefix = "As someone interested in antiviruses, "; //use recalled memory to personalise the response
                 }
 
-                System.Threading.Thread.Sleep(1000);
 
-                Console.WriteLine("=========================================================================================\n" +
-                                  "\t\t\t\t ANTIVIRUSES\n" +
-                                  "=========================================================================================");
 
                 string[] responses ={"Antivirus software helps detect and remove malware from your device.\n\n" +
                                      "It scans files and programs for suspicious behavior and blocks threats in real time.\n" +
@@ -368,11 +324,6 @@ namespace ST10475262_POE_PART_2
                     prefix = "As someone interested in social engineering, "; //use recalled memory to personalise the response
                 }
 
-                System.Threading.Thread.Sleep(1000);
-
-                Console.WriteLine("=========================================================================================\n" +
-                                  "\t\t\t\t SOCIAL ENGINEERING\n" +
-                                  "=========================================================================================");
 
                 string[] responses ={"Social engineering attacks manipulate people into revealing sensitive information.\n\n" +
                                      "Attackers often pretend to be trusted individuals or organisations.\n" +
@@ -410,11 +361,6 @@ namespace ST10475262_POE_PART_2
                     prefix = "As someone interested in data privacy, "; //use recalled memory to personalise the response
                 }
 
-                System.Threading.Thread.Sleep(1000);
-
-                Console.WriteLine("=========================================================================================\n" +
-                                  "\t\t\t\t DATA PRIVACY\n" +
-                                  "=========================================================================================");
 
                 string[] responses ={"Data privacy is about protecting your personal information online.\n\n" +
                                      "This includes your name, location, financial details, and browsing activity.\n" +
@@ -450,11 +396,7 @@ namespace ST10475262_POE_PART_2
                     prefix = "As someone interested in safe browsing, "; //use recalled memory to personalise the response
                 }
 
-                System.Threading.Thread.Sleep(1000);
 
-                Console.WriteLine("=========================================================================================\n" +
-                                  "\t\t\t\t SAFE BROWSING\n" +
-                                  "=========================================================================================");
 
                 string[] responses ={"Safe browsing means using the internet in a way that protects your data and devices.\n\n" +
                                      "Always check for HTTPS in website URLs to ensure a secure connection.\n" +
@@ -607,7 +549,6 @@ namespace ST10475262_POE_PART_2
             }
 
             //if a sentiment was detected, check if the user also mentioned a cybersecurity topic in the same message
-            //and automatically provide a tip - the user shouldn't have to ask again
             if (sentimentResponse != "")
             {
                 if (input.Contains("phishing") || input.Contains("scam"))
