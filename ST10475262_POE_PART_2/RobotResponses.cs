@@ -108,9 +108,19 @@ namespace ST10475262_POE_PART_2
 
         public static string Passwords(string input)
         {
+            lastTopic = "password"; //update lastTopic so conversational flow can reference this topic later
+
             if (input.Contains("password") || input.Contains("password safety"))//method to respond to password safety
             {
-                
+                string prefix = "";
+                if (memory.ContainsKey("interest") && memory["interest"].Contains("password"))
+                {
+                    prefix = "As someone interested in passwords, "; //use recalled memory to personalise the response
+                }
+                if (memory.ContainsKey("name")) //also add the user's name if we remember it
+                {
+                    prefix = memory["name"] + ", " + prefix;
+                }
 
                 System.Threading.Thread.Sleep(1000); //a slight delay before the chatbot responds
 
@@ -149,7 +159,14 @@ namespace ST10475262_POE_PART_2
         {
             if (input.Contains("password manager"))
             {
-                
+                lastTopic = "password manager"; //update lastTopic
+
+                //check memory to personalise the response if the user said they were interested in privacy
+                string prefix = "";
+                if (memory.ContainsKey("interest") && memory["interest"].Contains("password manager"))
+                {
+                    prefix = "As someone interested in password managers, "; //use recalled memory to personalise the response
+                }
 
                 System.Threading.Thread.Sleep(1000);
 
@@ -183,7 +200,14 @@ namespace ST10475262_POE_PART_2
         {
             if (input.Contains("2fa") || input.Contains("two factor") || input.Contains("two-factor"))
             {
-                
+                lastTopic = "2fa"; //update lastTopic
+
+                //check memory to personalise the response if the user said they were interested in 2fa
+                string prefix = "";
+                if (memory.ContainsKey("interest") && memory["interest"].Contains("2fa"))
+                {
+                    prefix = "As someone interested in 2FA, "; 
+                }
 
                 System.Threading.Thread.Sleep(1000);
 
@@ -216,7 +240,14 @@ namespace ST10475262_POE_PART_2
         {
             if (input.Contains("phishing"))
             {
-                
+                lastTopic = "phishing"; //update lastTopic
+
+                //check memory to personalise the response if the user said they were interested in phishing
+                string prefix = "";
+                if (memory.ContainsKey("interest") && memory["interest"].Contains("phishing"))
+                {
+                    prefix = "As someone interested in phishing, "; //use recalled memory to personalise the response
+                }
 
                 System.Threading.Thread.Sleep(1000);
 
@@ -248,7 +279,14 @@ namespace ST10475262_POE_PART_2
         {
             if (input.Contains("malware") || input.Contains("virus"))
             {
-                
+                lastTopic = "malware"; //update lastTopic
+
+                //check memory to personalise the response if the user said they were interested in malware
+                string prefix = "";
+                if (memory.ContainsKey("interest") && memory["interest"].Contains("malware"))
+                {
+                    prefix = "As someone interested in malware, "; //use recalled memory to personalise the response
+                }
 
                 System.Threading.Thread.Sleep(1000);
 
@@ -282,7 +320,14 @@ namespace ST10475262_POE_PART_2
         {
             if (input.Contains("antivirus"))
             {
-                
+                lastTopic = "antivirus"; //update lastTopic
+
+                //check memory to personalise the response if the user said they were interested in antivirus
+                string prefix = "";
+                if (memory.ContainsKey("interest") && memory["interest"].Contains("antivirus"))
+                {
+                    prefix = "As someone interested in antiviruses, "; //use recalled memory to personalise the response
+                }
 
                 System.Threading.Thread.Sleep(1000);
 
@@ -314,7 +359,14 @@ namespace ST10475262_POE_PART_2
         {
             if (input.Contains("social engineering"))
             {
-                
+                lastTopic = "social engineering"; //update lastTopic
+
+                //check memory to personalise the response if the user said they were interested in social engineering
+                string prefix = "";
+                if (memory.ContainsKey("interest") && memory["interest"].Contains("social engineering"))
+                {
+                    prefix = "As someone interested in social engineering, "; //use recalled memory to personalise the response
+                }
 
                 System.Threading.Thread.Sleep(1000);
 
@@ -349,7 +401,14 @@ namespace ST10475262_POE_PART_2
         {
             if (input.Contains("data privacy") || input.Contains("privacy"))
             {
-                
+                lastTopic = "data privacy"; //update lastTopic
+
+                //check memory to personalise the response if the user said they were interested in data privacy
+                string prefix = "";
+                if (memory.ContainsKey("interest") && memory["interest"].Contains("data privacy"))
+                {
+                    prefix = "As someone interested in data privacy, "; //use recalled memory to personalise the response
+                }
 
                 System.Threading.Thread.Sleep(1000);
 
@@ -382,7 +441,14 @@ namespace ST10475262_POE_PART_2
         {
             if (input.Contains("safe browsing") || input.Contains("browse safely")) //method to respond to safely browsing the internet
             {
-                
+                lastTopic = "safe browsing"; //update lastTopic
+
+                //check memory to personalise the response if the user said they were interested in safe browsing
+                string prefix = "";
+                if (memory.ContainsKey("interest") && memory["interest"].Contains("safe browsing"))
+                {
+                    prefix = "As someone interested in safe browsing, "; //use recalled memory to personalise the response
+                }
 
                 System.Threading.Thread.Sleep(1000);
 
@@ -410,6 +476,170 @@ namespace ST10475262_POE_PART_2
             return "";
         }
 
+        public static string RememberName(string input) //method to remember the user's name
+        {
+            if (input.Contains("my name is") || input.Contains("call me"))
+            {
+                string name = ""; //will hold the name we extract from the input
+
+                //extract the name by removing the phrase and keeping what's left
+                if (input.Contains("my name is"))
+                {
+                    name = input.Replace("my name is", "").Trim(); //remove "my name is" and trim spaces
+                }
+                else if (input.Contains("call me"))
+                {
+                    name = input.Replace("call me", "").Trim(); //remove "call me" and trim spaces
+                }
+
+                //capitalise the first letter to make the name look proper
+                if (name.Length > 0)
+                {
+                    name = char.ToUpper(name[0]) + name.Substring(1); //capitalise the first letter of the name
+                }
+
+                memory["name"] = name; //store the name in the memory dictionary so we can use it later
+
+                return botName + ": Nice to meet you, " + name + "! I'll remember your name. How can I help you today?";
+            }
+            return ""; //return empty string if keyword not found
+        }
+
+        public static string RememberInterest(string input) //method to remember what topic the user says they are interested in
+        {
+            if (input.Contains("i'm interested in") || input.Contains("i am interested in") || input.Contains("interested in"))
+            {
+                string topic = ""; //will hold the topic extracted from the input
+
+                //extract the topic by removing the phrase
+                if (input.Contains("i'm interested in"))
+                {
+                    topic = input.Replace("i'm interested in", "").Trim();
+                }
+                else if (input.Contains("i am interested in"))
+                {
+                    topic = input.Replace("i am interested in", "").Trim();
+                }
+                else if (input.Contains("interested in"))
+                {
+                    topic = input.Replace("interested in", "").Trim();
+                }
+
+                memory["interest"] = topic; //store the interest in the memory dictionary so we can personalise future responses
+
+                return botName + ": Great! I'll remember that you're interested in " + topic + ". It's a crucial part of staying safe online. Feel free to ask me anything about it!";
+            }
+            return ""; //return empty string if keyword not found
+        }
+
+
+        public static string TellMeMore(string input) //method to handle "tell me more" and follow-up requests
+        {
+            if (input.Contains("tell me more") || input.Contains("more info") || input.Contains("explain more") || input.Contains("another tip") || input.Contains("give me more") || input.Contains("elaborate"))
+            {
+                //check the last topic and re-call the right method to give another tip
+                if (lastTopic == "password")
+                {
+                    return Passwords("password"); //call passwords method again for a new random tip
+                }
+                else if (lastTopic == "password manager")
+                {
+                    return PasswordManagers("password manager"); //call password managers method again
+                }
+                else if (lastTopic == "2fa")
+                {
+                    return TwoFactorAuthentication("2fa"); //call 2fa method again
+                }
+                else if (lastTopic == "phishing")
+                {
+                    return Phishing("phishing"); //call phishing method again
+                }
+                else if (lastTopic == "malware")
+                {
+                    return Malware("malware"); //call malware method again
+                }
+                else if (lastTopic == "antivirus")
+                {
+                    return Antivirus("antivirus"); //call antivirus method again
+                }
+                else if (lastTopic == "social engineering")
+                {
+                    return SocialEngineering("social engineering"); //call social engineering method again
+                }
+                else if (lastTopic == "data privacy")
+                {
+                    return DataPrivacy("privacy"); //call data privacy method again
+                }
+                else if (lastTopic == "safe browsing")
+                {
+                    return SafeBrowsing("safe browsing"); //call safe browsing method again
+                }
+                else
+                {
+                    return botName + ": Sure! What topic would you like more information on? You can ask about passwords, phishing, malware, and more."; //no last topic to go back to
+                }
+            }
+            return ""; //return empty string if keyword not found
+        }
+
+
+        public static string DetectSentiment(string input) //method to detect emotions in the user's message
+        {
+            string sentimentResponse = ""; //will hold the empathy part of the response
+            string tipResponse = "";       //will hold the automatic tip that follows the empathy
+
+            //check for worried / scared sentiment
+            if (input.Contains("worried") || input.Contains("scared") || input.Contains("afraid") || input.Contains("anxious"))
+            {
+                sentimentResponse = botName + ": It's completely understandable to feel that way. Scammers and cybercriminals can be very convincing. Let me share some tips to help you stay safe.\n\n";
+            }
+
+            //check for frustrated / confused sentiment
+            if (input.Contains("frustrated") || input.Contains("confused") || input.Contains("annoyed"))
+            {
+                sentimentResponse = botName + ": I hear you - this stuff can be tricky! Don't worry, let's work through it together.\n\n";
+            }
+
+            //check for curious sentiment
+            if (input.Contains("curious") || input.Contains("wondering"))
+            {
+                sentimentResponse = botName + ": Great curiosity! Asking questions is the first step to staying safe online.\n\n";
+            }
+
+            //if a sentiment was detected, check if the user also mentioned a cybersecurity topic in the same message
+            //and automatically provide a tip - the user shouldn't have to ask again
+            if (sentimentResponse != "")
+            {
+                if (input.Contains("phishing") || input.Contains("scam"))
+                {
+                    tipResponse = Phishing("phishing"); //automatically get and attach a phishing tip
+                }
+                else if (input.Contains("password"))
+                {
+                    tipResponse = Passwords("password"); //automatically get and attach a password tip
+                }
+                else if (input.Contains("malware") || input.Contains("virus"))
+                {
+                    tipResponse = Malware("malware"); //automatically get and attach a malware tip
+                }
+                else if (input.Contains("privacy"))
+                {
+                    tipResponse = DataPrivacy("privacy"); //automatically get and attach a privacy tip
+                }
+                else if (input.Contains("2fa") || input.Contains("two factor"))
+                {
+                    tipResponse = TwoFactorAuthentication("2fa"); //automatically get and attach a 2fa tip
+                }
+                else
+                {
+                    tipResponse = botName + ": Here is a general tip: always keep your software updated, use strong passwords, and be cautious of suspicious links."; //general tip if no specific topic was found
+                }
+
+                return sentimentResponse + tipResponse; //return the empathy message AND the automatic tip together
+            }
+
+            return ""; //return empty string if no sentiment was detected in the input
+        }
 
         public static string DefaultResponse() //method to handle inputs that don't match any known keyword
         {

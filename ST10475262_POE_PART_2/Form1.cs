@@ -44,6 +44,10 @@ namespace ST10475262_POE_PART_2
             responseHandlers.Add(RobotResponses.SocialEngineering);     //social engineering
             responseHandlers.Add(RobotResponses.DataPrivacy);           //data privacy
             responseHandlers.Add(RobotResponses.SafeBrowsing);          //safe browsing
+            responseHandlers.Add(RobotResponses.DetectSentiment);         //sentiment detection runs first every time
+            responseHandlers.Add(RobotResponses.RememberName);            //check if user is telling us their name mid-chat
+            responseHandlers.Add(RobotResponses.RememberInterest);        //check if user is telling us their interest
+            responseHandlers.Add(RobotResponses.TellMeMore);              //handle "tell me more" follow-up requests
             responseHandlers.Add(RobotResponses.Exit);                  //exit / goodbye
         }
 
@@ -140,7 +144,7 @@ namespace ST10475262_POE_PART_2
             btnSend.Enabled = true;
             txtInput.Focus();
 
-            AddBotMessage("Before we begin, what is your name?"); //type the name prompt with the typing effect
+            AddBotMessage("Before we begin, what is your name? (start with 'call me' or 'my name is')"); //type the name prompt with the typing effect
         }
 
 
