@@ -127,10 +127,10 @@ namespace ST10475262_POE_PART_2
                                       "Enable two-factor authentication (2FA) wherever possible, as it adds an extra layer of\n" +
                                       "protection beyond just your password."};
 
-                
 
-                
-                return " " + responses[rand.Next(responses.Length)];
+
+
+                return " " + prefix + responses[rand.Next(responses.Length)];
             }
             return "";
         }
@@ -162,10 +162,10 @@ namespace ST10475262_POE_PART_2
                                        "It helps you create long, complex passwords without needing to remember them.\n\n" +
                                        "This is one of the easiest ways to improve your overall cybersecurity."};
 
-                
 
-                
-                return " " + responses[rand.Next(responses.Length)];
+
+
+                return " " + prefix + responses[rand.Next(responses.Length)];
             }
             return "";
         }
@@ -197,10 +197,10 @@ namespace ST10475262_POE_PART_2
                                      "and something you have (like your phone).\n\n" +
                                      "Always enable it on email, banking, and social media accounts."};
 
-                
 
-                
-                return " " + responses[rand.Next(responses.Length)];
+
+
+                return " " + prefix + responses[rand.Next(responses.Length)];
             }
             return "";
         }
@@ -231,10 +231,10 @@ namespace ST10475262_POE_PART_2
                                      "These messages try to make you panic and act without thinking.\n\n" +
                                      "Always double-check URLs and confirm requests directly with the organisation."};
 
-                
 
-                
-                return " " + responses[rand.Next(responses.Length)];
+
+
+                return " " + prefix + responses[rand.Next(responses.Length)];
             }
             return "";
         }
@@ -268,10 +268,10 @@ namespace ST10475262_POE_PART_2
                                      "Spyware secretly tracks your activity, while trojans disguise themselves as safe programs.\n\n" +
                                      "Keeping backups of your data and avoiding suspicious downloads can protect you."};
 
-                
 
-                
-                return " " + responses[rand.Next(responses.Length)];
+
+
+                return " " + prefix + responses[rand.Next(responses.Length)];
             }
             return "";
         }
@@ -303,10 +303,10 @@ namespace ST10475262_POE_PART_2
                                      "Enabling real-time protection and scheduling automatic scans\n" +
                                      "can significantly reduce your chances of infection."};
 
-                
 
-                
-                return " " + responses[rand.Next(responses.Length)];
+
+
+                return " " + prefix + responses[rand.Next(responses.Length)];
             }
             return "";
         }
@@ -340,10 +340,10 @@ namespace ST10475262_POE_PART_2
                                      "Legitimate organisations will never ask for this information directly.\n\n" +
                                      "Never share confidential data with unverified sources."};
 
-                
 
-                
-                return " " + responses[rand.Next(responses.Length)];
+
+
+                return " " + prefix + responses[rand.Next(responses.Length)];
             }
             return "";
         }
@@ -374,10 +374,10 @@ namespace ST10475262_POE_PART_2
                                      "Avoid public Wi-Fi for sensitive transactions and use trusted applications.\n" +
                                      "Being cautious online helps keep your information safe."};
 
-                
 
-                
-                return " " + responses[rand.Next(responses.Length)];
+
+
+                return " " + prefix + responses[rand.Next(responses.Length)];
             }
             return "";
         }
@@ -413,7 +413,7 @@ namespace ST10475262_POE_PART_2
                 
 
                 
-                return " " + responses[rand.Next(responses.Length)];
+                return " " + prefix + responses[rand.Next(responses.Length)];
             }
             return "";
         }
