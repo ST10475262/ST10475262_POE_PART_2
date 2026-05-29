@@ -22,7 +22,7 @@ namespace ST10475262_POE_PART_2
 
         public Form1()
         {
-            InitializeComponent(); 
+            InitializeComponent();
             SetupDelegateList();   //fill the delegate list with all topic methods
             SetupTypingTimer();    //configure the typing timer
             //PlayStartupSound();    //play  cypherr.wav
@@ -325,6 +325,25 @@ namespace ST10475262_POE_PART_2
         private void panelDisplay_Paint(object sender, PaintEventArgs e)
         {
 
+        }
+
+        private void txtInput_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void txtInput_Enter(object sender, EventArgs e)
+        {
+
+        }
+
+        private void txtInput_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter) //if the key pressed was Enter
+            {
+                e.SuppressKeyPress = true; //suppress the ding sound that TextBox makes on Enter
+                button1_Click(sender, e);  //treat it exactly the same as clicking the Send button
+            }
         }
     }
 }
