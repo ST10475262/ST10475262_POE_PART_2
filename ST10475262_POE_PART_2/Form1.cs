@@ -6,12 +6,27 @@ namespace ST10475262_POE_PART_2
     public partial class Form1 : Form
     {
         List<ResponseDelegate> responseHandlers = new List<ResponseDelegate>(); //list of delegates pointing to all our response methods
+
+        System.Windows.Forms.Timer typingTimer = new System.Windows.Forms.Timer(); //timer that fires every 18ms
+        string fullTypingText = "";   //the full response text we are currently typing out
+        int typingIndex = 0;    //how many characters have been revealed so far
+        Label typingLabel = null; //direct reference to the label currently being typed into
+        bool isTyping = false; //true while the bot is mid-response
+
+
+        bool waitingForName = false; //true while waiting for the user to type their name
+        bool startupDone = false; //true once the name has been collected and normal chat can begin
+        bool askNameAfterTyping = false; //tells the typing timer to trigger the name prompt when it finishes
+        bool exitAfterTyping = false; //tells the typing timer to keep input disabled after a goodbye message
+
+
         public Form1()
         {
-            InitializeComponent();
-            SetupDelegateList();
-            ShowWelcomeMessage();
-            PlayStartupSound();
+            InitializeComponent(); 
+            SetupDelegateList();   //fill the delegate list with all topic methods
+            SetupTypingTimer();    //configure the typing timer
+            //PlayStartupSound();    //play  cypherr.wav
+            ShowWelcomeMessage();  //display the welcome message then prompt for name
         }
 
         private void SetupDelegateList() //method to fill the delegate list with all our topic methods
@@ -32,26 +47,132 @@ namespace ST10475262_POE_PART_2
             responseHandlers.Add(RobotResponses.Exit);                  //exit / goodbye
         }
 
-        private void ShowWelcomeMessage() //displays the welcome message when the app starts
+        private void ShowWelcomeMessage() //types the welcome message, then queues the name prompt
         {
-            AddBotMessage("Welcome to Cypherr Bot - your Cybersecurity Awareness Assistant!\n\n" +
-                          "Tell me your name to get started, or ask about:\n" +
-                          "Passwords, Phishing, Malware, 2FA, Antivirus, Privacy, Safe Browsing.\n\n" +
-                          "Type 'help' to see all topics.  Type 'exit' to quit.");
+            askNameAfterTyping = true; //once the welcome message finishes typing, automatically call AskForName()
+            AddBotMessage("Welcome to Cypherr Bot - your Cybersecurity Awareness Assistant!"); //type the welcome message
         }
 
-        private void AddBotMessage(string message) //adds a bot message to the left side of the chat
+        private void SetupTypingTimer() //configures the timer used for the typing effect
         {
-            Panel messagePanel = CreateMessagePanel(message, isBotMessage: true); //create a left-aligned panel
-            panelDisplay.Controls.Add(messagePanel); //add the panel to the chat flow
-            ScrollToBottom(); //scroll down so the new message is visible
+            typingTimer.Interval = 18;                                      //fire every 18ms - same feel as Thread.Sleep(25) from Part 1
+            typingTimer.Tick += new EventHandler(TypingTimer_Tick);         //call TypingTimer_Tick on every tick
         }
 
-        private void AddUserMessage(string message) //adds a user message to the right side of the chat
+        private void TypingTimer_Tick(object sender, EventArgs e) //called every 18ms while the bot is typing
         {
-            Panel messagePanel = CreateMessagePanel(message, isBotMessage: false); //create a right-aligned panel
-            panelDisplay.Controls.Add(messagePanel); //add the panel to the chat flow
-            ScrollToBottom(); //scroll down so the new message is visible
+            if (typingIndex < fullTypingText.Length) //still characters left to reveal
+            {
+                typingLabel.Text = fullTypingText.Substring(0, typingIndex + 1); //reveal one more character into the label
+                typingIndex++;                                                    //move to the next character position
+                ScrollToBottom();                                                 //keep the chat scrolled to the bottom as text grows
+            }
+            else //all characters have been revealed
+            {
+                typingTimer.Stop(); //stop the timer
+                isTyping = false;   //mark that typing has finished
+
+                if (exitAfterTyping) //if this was a goodbye message, keep input disabled permanently
+                {
+                    btnSend.Enabled = false;
+                    txtInput.Enabled = false;
+                    return;
+                }
+
+                if (askNameAfterTyping) //if we need to show the name prompt next
+                {
+                    askNameAfterTyping = false; //clear the flag so it doesn't trigger again
+                    AskForName();               //show the name prompt
+                    return;
+                }
+
+                //normal case - re-enable input so the user can send their next message
+                btnSend.Enabled = true;
+                txtInput.Enabled = true;
+                txtInput.Focus(); //put the cursor back in the input box automatically
+            }
+        }
+
+        private void StartTypingEffect(Label label, string fullText) //starts the character-by-character typing effect on a given label
+        {
+            typingLabel = label;    //store a reference to the label we will be updating each tick
+            fullTypingText = fullText; //store the full text to be typed out
+            typingIndex = 0;        //start from the very first character
+            isTyping = true;     //mark that we are currently typing
+
+            btnSend.Enabled = false;  //disable the send button while typing so messages don't pile up
+            txtInput.Enabled = false;  //disable the input box while the bot is typing
+            typingTimer.Start();       //start the timer - TypingTimer_Tick will do the rest
+        }
+
+        private void AddBotMessage(string message) //adds a bot message to the left side and starts typing it out
+        {
+            //name label - small bold label showing "Cypherr" above the message
+            Label nameLabel = new Label();
+            nameLabel.Text = "Cypherr";
+            nameLabel.Font = new Font("Segoe UI", 8f, FontStyle.Bold);
+            nameLabel.ForeColor = Color.FromArgb(56, 189, 248); //cyan colour for the bot name
+            nameLabel.AutoSize = true;
+            nameLabel.Margin = new Padding(4, 6, 4, 0); //a little space above each message
+
+            //message label - starts empty, typing timer fills it in character by character
+            Label messageLabel = new Label();
+            messageLabel.Text = "";                              //empty to start - typing effect will fill this
+            messageLabel.Font = new Font("Segoe UI", 10f);
+            messageLabel.ForeColor = Color.FromArgb(56, 189, 248); //cyan text for bot messages
+            messageLabel.AutoSize = true;
+            messageLabel.MaximumSize = new Size((panelDisplay.ClientSize.Width / 2) + 100, 0); //limit width to roughly half the panel
+            messageLabel.Margin = new Padding(4, 0, 4, 4);
+
+            panelDisplay.Controls.Add(nameLabel);    //add name label to the flow panel
+            panelDisplay.Controls.Add(messageLabel); //add message label to the flow panel
+            ScrollToBottom();
+
+            StartTypingEffect(messageLabel, message); //start typing the response into this label character by character
+        }
+
+        private void AskForName() //asks the user to enter their name - called automatically after welcome finishes
+        {
+            waitingForName = true;  //the next input from the user will be treated as their name
+            startupDone = false; //normal chat hasn't started yet
+
+            txtInput.Enabled = true; //enable input so the user can type their name
+            btnSend.Enabled = true;
+            txtInput.Focus();
+
+            AddBotMessage("Before we begin, what is your name?"); //type the name prompt with the typing effect
+        }
+
+
+        private void AddUserMessage(string message) //adds a user message to the right side instantly
+        {
+            //get the remembered name for the label, fall back to "You" if not stored yet
+            string displayName = "You";
+            if (RobotResponses.memory.ContainsKey("name"))
+            {
+                displayName = RobotResponses.memory["name"]; //use the name we stored in memory
+            }
+
+            //name label
+            Label nameLabel = new Label();
+            nameLabel.Text = displayName;
+            nameLabel.Font = new Font("Segoe UI", 8f, FontStyle.Bold);
+            nameLabel.ForeColor = Color.FromArgb(74, 222, 128); //green colour for the user name
+            nameLabel.AutoSize = true;
+            nameLabel.Margin = new Padding(4, 6, 4, 0);
+
+            //message label - shown immediately with no typing effect
+            Label messageLabel = new Label();
+            messageLabel.Text = message;
+            messageLabel.Font = new Font("Segoe UI", 10f);
+            messageLabel.ForeColor = Color.FromArgb(74, 222, 128); //green text for user messages
+            messageLabel.AutoSize = true;
+            messageLabel.MaximumSize = new Size((panelDisplay.ClientSize.Width / 2) + 100, 0);
+            messageLabel.Margin = new Padding(4, 0, 4, 4);
+
+            panelDisplay.Controls.Add(nameLabel);    //add to the flow panel
+            panelDisplay.Controls.Add(messageLabel);
+            ScrollToBottom();
         }
 
         private Panel CreateMessagePanel(string message, bool isBotMessage) //creates a coloured message panel
