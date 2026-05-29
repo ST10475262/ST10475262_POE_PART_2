@@ -277,82 +277,68 @@ namespace ST10475262_POE_PART_2
 
         }
 
-        private void button1_Click(object sender, EventArgs e) //fires when the user clicks Send
+        private void button1_Click(object sender, EventArgs e)
         {
-            if (isTyping) return; //don't accept input while the bot is still typing its previous response
+            string userInput = txtInput.Text.Trim(); //get the text from the input box and remove extra spaces
 
-            string userInput = txtInput.Text.Trim(); //get the typed text and remove leading/trailing spaces
-
-            if (userInput == "") return; //do nothing if the input box was empty
-
-            if (waitingForName)
+            if (userInput == "") //if the user sent nothing, do nothing
             {
-                string name = userInput;
-
-                //capitalise the first letter to make the name look proper
-                if (name.Length > 0)
-                {
-                    name = char.ToUpper(name[0]) + name.Substring(1); //capitalise first letter
-                }
-
-                RobotResponses.memory["name"] = name; //store the name in the memory dictionary
-
-                AddUserMessage(userInput); //show what the user typed on the right side
-                txtInput.Clear();          //clear the input box
-
-                waitingForName = false; //stop treating input as a name
-                startupDone = true;  //normal chat can now begin
-
-                //greet the user by name and list the available topics
-                AddBotMessage("Nice to meet you, " + name + "!\n\n" +
-                              "You can ask me about:\n" +
-                              "  - Passwords & Password Managers\n" +
-                              "  - 2FA (Two-Factor Authentication)\n" +
-                              "  - Phishing & Scams\n" +
-                              "  - Malware & Viruses\n" +
-                              "  - Antivirus Software\n" +
-                              "  - Social Engineering\n" +
-                              "  - Data Privacy\n" +
-                              "  - Safe Browsing\n\n" +
-                              "Type 'help' to see topics again.  Type 'exit' to quit.");
-                return; //done - don't fall through into the normal response loop
+                return;
             }
 
-            
-            AddUserMessage(userInput); //show the user's message on the right side immediately
-            txtInput.Clear();          //clear the input box
+            AddUserMessage(userInput); //display the user's message on the RIGHT side of the chat
+            txtInput.Clear();          //clear the input box after sending
 
-            string botResponse = "";
+            string botResponse = ""; //will hold the bot's response
 
-            string lowercaseInput = userInput.ToLower(); //convert to lowercase so keywords match regardless of how the user typed them
+            // Loop through every delegate in our list and call it with the user's input.
+            // If a method returns a non-empty string, it means it matched - use that response and stop.
+            string lowercaseInput = userInput.ToLower(); //convert input to lowercase so keywords match regardless of capitalisation
 
-            foreach (ResponseDelegate handler in responseHandlers) //loop through all registered delegate methods
+            string sentiment = RobotResponses.DetectSentiment(lowercaseInput);
+
+
+            foreach (ResponseDelegate handler in responseHandlers)
             {
-                string result = handler(lowercaseInput); //call each method via the delegate
+                if (handler == RobotResponses.DetectSentiment)
+                    continue;
 
-                if (result != "") //non-empty string means this method matched
+                string result = handler(lowercaseInput);
+
+                if (result != "")
                 {
-                    botResponse = result; //use this response
-                    break;               //stop looping - we found our match
+                    botResponse = result;
+                    break;
                 }
             }
 
-            if (botResponse == "") //if nothing matched at all, use the default response
+            if (botResponse == "")
             {
                 botResponse = RobotResponses.DefaultResponse();
             }
 
-            if (botResponse.StartsWith("EXIT|")) //goodbye message
+            botResponse = sentiment + botResponse;
+
+            //if none of the methods matched, use the default response
+            if (botResponse == "")
             {
-                string goodbyeMessage = botResponse.Replace("EXIT|", ""); //strip the EXIT| prefix
-                exitAfterTyping = true; //keep input disabled after typing finishes
-                AddBotMessage(goodbyeMessage); //type out the goodbye message
+                botResponse = RobotResponses.DefaultResponse(); //call the default/fallback response
+            }
+
+            //check if the response starts with "EXIT|" which means the user wants to quit
+            if (botResponse.StartsWith("EXIT|"))
+            {
+                string goodbyeMessage = botResponse.Replace("EXIT|", ""); //remove the EXIT| prefix
+                AddBotMessage(goodbyeMessage); //show the goodbye message
+                txtInput.Enabled = false;   //disable the input box so the user can't type anymore
+                btnSend.Enabled = false;    //disable the send button
             }
             else
             {
-                AddBotMessage(botResponse); //type out the normal bot response
+                AddBotMessage(botResponse); //display the bot's response on the LEFT side of the chat
             }
         }
+
         private void panelDisplay_Paint(object sender, PaintEventArgs e)
         {
 
