@@ -12,7 +12,7 @@ namespace ST10475262_POE_PART_2
     public class RobotResponses
     {
         static Random rand = new Random();//global randomizer for responses
-        static string botName = "Cypherr: "; //global variable to store the bot's name
+        static string botName = "Cypherr"; //global variable to store the bot's name
 
         public static Dictionary<string, string> memory = new Dictionary<string, string>(); //stores things the bot remembers about the user
         public static string lastTopic = ""; //used for conversational flow
@@ -94,12 +94,15 @@ namespace ST10475262_POE_PART_2
 
         public static string Passwords(string input)
         {
-            lastTopic = "password"; //update lastTopic so conversational flow can reference this topic later
+            
 
             if (input.Contains("password") || input.Contains("password safety"))//method to respond to password safety
             {
+
+                lastTopic = "password"; //update lastTopic so conversational flow can reference this topic later
+
                 string prefix = "";
-                if (memory.ContainsKey("interest") && memory["interest"].Contains("password"))
+                if (memory.ContainsKey("interest") && memory["interest"]=="password")
                 {
                     prefix = "As someone interested in passwords, "; //use recalled memory to personalise the response
                 }
@@ -143,7 +146,7 @@ namespace ST10475262_POE_PART_2
 
                 //check memory to personalise the response if the user said they were interested in privacy
                 string prefix = "";
-                if (memory.ContainsKey("interest") && memory["interest"].Contains("password manager"))
+                if (memory.ContainsKey("interest") && memory["interest"]=="password manager")
                 {
                     prefix = "As someone interested in password managers, "; //use recalled memory to personalise the response
                 }
@@ -178,7 +181,7 @@ namespace ST10475262_POE_PART_2
 
                 //check memory to personalise the response if the user said they were interested in 2fa
                 string prefix = "";
-                if (memory.ContainsKey("interest") && memory["interest"].Contains("2fa"))
+                if (memory.ContainsKey("interest") && memory["interest"]=="2fa")
                 {
                     prefix = "As someone interested in 2FA, "; 
                 }
@@ -213,7 +216,7 @@ namespace ST10475262_POE_PART_2
 
                 //check memory to personalise the response if the user said they were interested in phishing
                 string prefix = "";
-                if (memory.ContainsKey("interest") && memory["interest"].Contains("phishing"))
+                if (memory.ContainsKey("interest") && memory["interest"]=="phishing")
                 {
                     prefix = "As someone interested in phishing, "; //use recalled memory to personalise the response
                 }
@@ -247,7 +250,7 @@ namespace ST10475262_POE_PART_2
 
                 //check memory to personalise the response if the user said they were interested in malware
                 string prefix = "";
-                if (memory.ContainsKey("interest") && memory["interest"].Contains("malware"))
+                if (memory.ContainsKey("interest") && memory["interest"]=="malware")
                 {
                     prefix = "As someone interested in malware, "; //use recalled memory to personalise the response
                 }
@@ -284,7 +287,7 @@ namespace ST10475262_POE_PART_2
 
                 //check memory to personalise the response if the user said they were interested in antivirus
                 string prefix = "";
-                if (memory.ContainsKey("interest") && memory["interest"].Contains("antivirus"))
+                if (memory.ContainsKey("interest") && memory["interest"]=="antivirus")
                 {
                     prefix = "As someone interested in antiviruses, "; //use recalled memory to personalise the response
                 }
@@ -319,7 +322,7 @@ namespace ST10475262_POE_PART_2
 
                 //check memory to personalise the response if the user said they were interested in social engineering
                 string prefix = "";
-                if (memory.ContainsKey("interest") && memory["interest"].Contains("social engineering"))
+                if (memory.ContainsKey("interest") && memory["interest"]=="social engineering")
                 {
                     prefix = "As someone interested in social engineering, "; //use recalled memory to personalise the response
                 }
@@ -356,7 +359,7 @@ namespace ST10475262_POE_PART_2
 
                 //check memory to personalise the response if the user said they were interested in data privacy
                 string prefix = "";
-                if (memory.ContainsKey("interest") && memory["interest"].Contains("data privacy"))
+                if (memory.ContainsKey("interest") && memory["interest"]=="data privacy")
                 {
                     prefix = "As someone interested in data privacy, "; //use recalled memory to personalise the response
                 }
@@ -391,7 +394,7 @@ namespace ST10475262_POE_PART_2
 
                 //check memory to personalise the response if the user said they were interested in safe browsing
                 string prefix = "";
-                if (memory.ContainsKey("interest") && memory["interest"].Contains("safe browsing"))
+                if (memory.ContainsKey("interest") && memory["interest"] == "safe browsing")
                 {
                     prefix = "As someone interested in safe browsing, "; //use recalled memory to personalise the response
                 }
@@ -437,7 +440,14 @@ namespace ST10475262_POE_PART_2
                 //capitalise the first letter to make the name look proper
                 if (name.Length > 0)
                 {
-                    name = char.ToUpper(name[0]) + name.Substring(1); //capitalise the first letter of the name
+                    if (!string.IsNullOrWhiteSpace(name))
+                    {
+                        name = char.ToUpper(name[0]) + name.Substring(1);
+                    }
+                    else
+                    {
+                        return "";
+                    }
                 }
 
                 memory["name"] = name; //store the name in the memory dictionary so we can use it later
@@ -447,13 +457,15 @@ namespace ST10475262_POE_PART_2
             return ""; //return empty string if keyword not found
         }
 
-        public static string RememberInterest(string input) //method to remember what topic the user says they are interested in
+        public static string RememberInterest(string input)
         {
-            if (input.Contains("i'm interested in") || input.Contains("i am interested in") || input.Contains("interested in"))
+            if (input.Contains("i'm interested in") ||
+                input.Contains("i am interested in") ||
+                input.Contains("interested in"))
             {
-                string topic = ""; //will hold the topic extracted from the input
+                string topic = "";
 
-                //extract the topic by removing the phrase
+                // extract topic
                 if (input.Contains("i'm interested in"))
                 {
                     topic = input.Replace("i'm interested in", "").Trim();
@@ -467,11 +479,39 @@ namespace ST10475262_POE_PART_2
                     topic = input.Replace("interested in", "").Trim();
                 }
 
-                memory["interest"] = topic; //store the interest in the memory dictionary so we can personalise future responses
+                // convert to lowercase
+                topic = topic.ToLower();
 
-                return " Great! I'll remember that you're interested in " + topic + ". It's a crucial part of staying safe online. Feel free to ask me anything about it!";
+                // valid cybersecurity topics
+                List<string> validTopics = new List<string>(){"password","passwords","password manager","password managers","2fa","two factor authentication","phishing","malware","virus","antivirus","social engineering","data privacy","privacy","safe browsing"};
+
+                // check if topic is valid
+                bool valid = false;
+
+                foreach (string validTopic in validTopics)
+                {
+                    if (topic.Contains(validTopic))
+                    {
+                        valid = true;
+                        topic = validTopic;
+                        break;
+                    }
+                }
+
+                // if invalid/misspelled
+                if (!valid)
+                {
+                    return "I'm not sure what topic that is. Please ask about a cybersecurity topic like passwords, phishing, malware, 2FA, or privacy.";
+                }
+
+                // save memory
+                memory["interest"] = topic;
+
+                return "Great! I'll remember that you're interested in " + topic +
+                       ". Feel free to ask me anything about it!";
             }
-            return ""; //return empty string if keyword not found
+
+            return "";
         }
 
 

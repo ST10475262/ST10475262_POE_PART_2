@@ -1,4 +1,3 @@
-using ST10475262_POE_PART_2;
 using System.Media;
 
 namespace ST10475262_POE_PART_2
@@ -29,26 +28,30 @@ namespace ST10475262_POE_PART_2
             ShowWelcomeMessage();  //display the welcome message then prompt for name
         }
 
-        private void SetupDelegateList() //method to fill the delegate list with all our topic methods
+        private void SetupDelegateList()
         {
-            responseHandlers.Add(RobotResponses.Hello);                 //greetings
-            responseHandlers.Add(RobotResponses.Greeting);             //how are you questions
-            responseHandlers.Add(RobotResponses.Purpose);               //what do you do
-            responseHandlers.Add(RobotResponses.Help);                  //help / topic list
-            responseHandlers.Add(RobotResponses.PasswordManagers);      //password managers - MUST come before Passwords
-            responseHandlers.Add(RobotResponses.Passwords);             //password safety
-            responseHandlers.Add(RobotResponses.TwoFactorAuthentication); //2fa
-            responseHandlers.Add(RobotResponses.Phishing);              //phishing
-            responseHandlers.Add(RobotResponses.Malware);               //malware and viruses
-            responseHandlers.Add(RobotResponses.Antivirus);             //antivirus
-            responseHandlers.Add(RobotResponses.SocialEngineering);     //social engineering
-            responseHandlers.Add(RobotResponses.DataPrivacy);           //data privacy
-            responseHandlers.Add(RobotResponses.SafeBrowsing);          //safe browsing
-            responseHandlers.Add(RobotResponses.DetectSentiment);         //sentiment detection runs first every time
-            responseHandlers.Add(RobotResponses.RememberName);            //check if user is telling us their name mid-chat
-            responseHandlers.Add(RobotResponses.RememberInterest);        //check if user is telling us their interest
-            responseHandlers.Add(RobotResponses.TellMeMore);              //handle "tell me more" follow-up requests
-            responseHandlers.Add(RobotResponses.Exit);                  //exit / goodbye
+            responseHandlers.Add(RobotResponses.DetectSentiment);
+
+            // MEMORY / CONTEXT FIRST
+            responseHandlers.Add(RobotResponses.RememberName);
+            responseHandlers.Add(RobotResponses.RememberInterest);
+
+            // NORMAL TOPICS AFTER
+            responseHandlers.Add(RobotResponses.Hello);
+            responseHandlers.Add(RobotResponses.Greeting);
+            responseHandlers.Add(RobotResponses.Purpose);
+            responseHandlers.Add(RobotResponses.Help);
+            responseHandlers.Add(RobotResponses.PasswordManagers);
+            responseHandlers.Add(RobotResponses.Passwords);
+            responseHandlers.Add(RobotResponses.TwoFactorAuthentication);
+            responseHandlers.Add(RobotResponses.Phishing);
+            responseHandlers.Add(RobotResponses.Malware);
+            responseHandlers.Add(RobotResponses.Antivirus);
+            responseHandlers.Add(RobotResponses.SocialEngineering);
+            responseHandlers.Add(RobotResponses.DataPrivacy);
+            responseHandlers.Add(RobotResponses.SafeBrowsing);
+            responseHandlers.Add(RobotResponses.TellMeMore);
+            responseHandlers.Add(RobotResponses.Exit);
         }
 
         private void ShowWelcomeMessage() //types the welcome message, then queues the name prompt
@@ -179,68 +182,6 @@ namespace ST10475262_POE_PART_2
             ScrollToBottom();
         }
 
-        private Panel CreateMessagePanel(string message, bool isBotMessage) //creates a coloured message panel
-        {
-            //the outer panel takes the full width and is used to push the bubble left or right
-            Panel outerPanel = new Panel();
-            outerPanel.Width = panelDisplay.ClientSize.Width - 20; //match the width of the chat area
-            outerPanel.AutoSize = true; //grow to fit the content inside
-            outerPanel.BackColor = Color.Transparent; //transparent so the chat background shows through
-
-            //the name label shows who sent the message ("Cypherr" or the user's name)
-            Label nameLabel = new Label();
-            nameLabel.AutoSize = true;
-            nameLabel.Font = new Font("Segoe UI", 8f, FontStyle.Bold); //small bold font for the name
-
-            //the message label holds the actual text of the message
-            Label messageLabel = new Label();
-            messageLabel.Text = message; //set the message text
-            messageLabel.Font = new Font("Segoe UI", 10f); //readable font size
-            messageLabel.AutoSize = true;
-            messageLabel.MaximumSize = new Size((outerPanel.Width / 2) + 80, 0); //limit width to half the panel so it looks like a bubble
-            messageLabel.Padding = new Padding(10, 8, 10, 8); //padding inside the bubble
-
-            if (isBotMessage) //bot messages go on the LEFT
-            {
-                nameLabel.Text = "Cypherr"; //bot name label
-                nameLabel.ForeColor = Color.FromArgb(56, 189, 248); //cyan colour for the bot name
-                nameLabel.Location = new Point(5, 2); //position name label at the top left
-
-                messageLabel.BackColor = Color.FromArgb(21, 51, 78); //dark teal background for bot messages
-                messageLabel.ForeColor = Color.FromArgb(230, 237, 243); //light grey text
-                messageLabel.Location = new Point(5, nameLabel.Height + 4); //position below the name label
-            }
-            else //user messages go on the RIGHT
-            {
-                //check if we remember the user's name to display it
-                string displayName = "You";
-                if (RobotResponses.memory.ContainsKey("name"))
-                {
-                    displayName = RobotResponses.memory["name"]; //use the remembered name
-                }
-
-                nameLabel.Text = displayName; //user's name label
-                nameLabel.ForeColor = Color.FromArgb(74, 222, 128); //green colour for the user name
-                messageLabel.BackColor = Color.FromArgb(35, 71, 34); //dark green background for user messages
-                messageLabel.ForeColor = Color.FromArgb(230, 237, 243); //light grey text
-
-                //measure the label so we can push it to the right side
-                messageLabel.Location = new Point(5, nameLabel.Height + 4); //position below name label temporarily
-
-                //we'll adjust the position after adding to the panel so it sits on the right
-                outerPanel.SizeChanged += (s, e) => //wait until the panel knows its size, then position on the right
-                {
-                    int rightX = outerPanel.Width - messageLabel.Width - 5; //calculate right-aligned X position
-                    messageLabel.Location = new Point(rightX, nameLabel.Height + 4); //move bubble to the right
-                    nameLabel.Location = new Point(rightX, 2); //move name label to match
-                };
-            }
-
-            outerPanel.Controls.Add(nameLabel);    //add name label to the panel
-            outerPanel.Controls.Add(messageLabel); //add message label to the panel
-
-            return outerPanel; //return the complete message panel
-        }
 
         private void ScrollToBottom() //scrolls the chat to show the most recent message
         {
@@ -279,7 +220,28 @@ namespace ST10475262_POE_PART_2
 
         private void button1_Click(object sender, EventArgs e)
         {
+
             string userInput = txtInput.Text.Trim(); //get the text from the input box and remove extra spaces
+
+
+            if (waitingForName)
+            {
+                AddUserMessage(userInput);
+                txtInput.Clear();
+
+                string response = RobotResponses.RememberName(userInput);
+
+                waitingForName = false;
+                startupDone = true;
+
+                //AddBotMessage(response);
+
+                // OPTIONAL: re-introduce purpose/help after name
+                AddBotMessage($"Hi {userInput}, I can help you learn about cybersecurity. Try asking 'what can you do' or 'help'.");
+
+                return;
+            }
+
 
             if (userInput == "") //if the user sent nothing, do nothing
             {
@@ -317,7 +279,10 @@ namespace ST10475262_POE_PART_2
                 botResponse = RobotResponses.DefaultResponse();
             }
 
-            botResponse = sentiment + botResponse;
+            if (sentiment != "")
+            {
+                botResponse = sentiment + botResponse;
+            }
 
             //if none of the methods matched, use the default response
             if (botResponse == "")
