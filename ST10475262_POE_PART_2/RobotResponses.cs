@@ -36,7 +36,7 @@ namespace ST10475262_POE_PART_2
 
                 lastTopic = "greeting"; //update lastTopic
 
-                return botName + ": " + responses[rand.Next(responses.Length)]; //selects a random response from the array
+                return " " + responses[rand.Next(responses.Length)]; //selects a random response from the array
             }
             return ""; //return an empty string to signal that this method did not match - the main form checks for empty string
         }
@@ -58,7 +58,7 @@ namespace ST10475262_POE_PART_2
 
                 lastTopic = "greeting"; //update lastTopic
 
-                return botName + ": " + responses[rand.Next(responses.Length)];
+                return " " + responses[rand.Next(responses.Length)];
             }
             return "";
         }
@@ -82,7 +82,7 @@ namespace ST10475262_POE_PART_2
                 
 
                 
-                return botName + ": " + responses[rand.Next(responses.Length)];
+                return " " + responses[rand.Next(responses.Length)];
             }
             return "";
         }
@@ -100,7 +100,7 @@ namespace ST10475262_POE_PART_2
                                   "=========================================================================================");
 
                 
-                return botName + ": " + "You can ask me about passwords, password managers, 2FA(Two - Factor Authentication),\n" +
+                return " " + "You can ask me about passwords, password managers, 2FA(Two - Factor Authentication),\n" +
                                   "phishing, malware, antiviruses, social engrinnering, data privacy and safe browsing.";
             }
             return "";
@@ -150,7 +150,7 @@ namespace ST10475262_POE_PART_2
                 
 
                 
-                return botName + ": " + responses[rand.Next(responses.Length)];
+                return " " + responses[rand.Next(responses.Length)];
             }
             return "";
         }
@@ -191,7 +191,7 @@ namespace ST10475262_POE_PART_2
                 
 
                 
-                return botName + ": " + responses[rand.Next(responses.Length)];
+                return " " + responses[rand.Next(responses.Length)];
             }
             return "";
         }
@@ -231,7 +231,7 @@ namespace ST10475262_POE_PART_2
                 
 
                 
-                return botName + ": " + responses[rand.Next(responses.Length)];
+                return " " + responses[rand.Next(responses.Length)];
             }
             return "";
         }
@@ -270,7 +270,7 @@ namespace ST10475262_POE_PART_2
                 
 
                 
-                return botName + ": " + responses[rand.Next(responses.Length)];
+                return " " + responses[rand.Next(responses.Length)];
             }
             return "";
         }
@@ -311,7 +311,7 @@ namespace ST10475262_POE_PART_2
                 
 
                 
-                return botName + ": " + responses[rand.Next(responses.Length)];
+                return " " + responses[rand.Next(responses.Length)];
             }
             return "";
         }
@@ -350,7 +350,7 @@ namespace ST10475262_POE_PART_2
                 
 
                 
-                return botName + ": " + responses[rand.Next(responses.Length)];
+                return " " + responses[rand.Next(responses.Length)];
             }
             return "";
         }
@@ -392,7 +392,7 @@ namespace ST10475262_POE_PART_2
                 
 
                 
-                return botName + ": " + responses[rand.Next(responses.Length)];
+                return " " + responses[rand.Next(responses.Length)];
             }
             return "";
         }
@@ -431,7 +431,7 @@ namespace ST10475262_POE_PART_2
                 
 
                 
-                return botName + ": " + responses[rand.Next(responses.Length)];
+                return " " + responses[rand.Next(responses.Length)];
             }
             return "";
         }
@@ -471,7 +471,7 @@ namespace ST10475262_POE_PART_2
                 
 
                 
-                return botName + ": " + responses[rand.Next(responses.Length)];
+                return " " + responses[rand.Next(responses.Length)];
             }
             return "";
         }
@@ -500,7 +500,7 @@ namespace ST10475262_POE_PART_2
 
                 memory["name"] = name; //store the name in the memory dictionary so we can use it later
 
-                return botName + ": Nice to meet you, " + name + "! I'll remember your name. How can I help you today?";
+                return " Nice to meet you, " + name + "! I'll remember your name. How can I help you today?";
             }
             return ""; //return empty string if keyword not found
         }
@@ -527,7 +527,7 @@ namespace ST10475262_POE_PART_2
 
                 memory["interest"] = topic; //store the interest in the memory dictionary so we can personalise future responses
 
-                return botName + ": Great! I'll remember that you're interested in " + topic + ". It's a crucial part of staying safe online. Feel free to ask me anything about it!";
+                return " Great! I'll remember that you're interested in " + topic + ". It's a crucial part of staying safe online. Feel free to ask me anything about it!";
             }
             return ""; //return empty string if keyword not found
         }
@@ -576,7 +576,7 @@ namespace ST10475262_POE_PART_2
                 }
                 else
                 {
-                    return botName + ": Sure! What topic would you like more information on? You can ask about passwords, phishing, malware, and more."; //no last topic to go back to
+                    return " Sure! What topic would you like more information on? You can ask about passwords, phishing, malware, and more."; //no last topic to go back to
                 }
             }
             return ""; //return empty string if keyword not found
@@ -591,19 +591,19 @@ namespace ST10475262_POE_PART_2
             //check for worried / scared sentiment
             if (input.Contains("worried") || input.Contains("scared") || input.Contains("afraid") || input.Contains("anxious"))
             {
-                sentimentResponse = botName + ": It's completely understandable to feel that way. Scammers and cybercriminals can be very convincing. Let me share some tips to help you stay safe.\n\n";
+                sentimentResponse = " It's completely understandable to feel that way. Scammers and cybercriminals can be very convincing. Let me share some tips to help you stay safe.\n\n";
             }
 
             //check for frustrated / confused sentiment
             if (input.Contains("frustrated") || input.Contains("confused") || input.Contains("annoyed"))
             {
-                sentimentResponse = botName + ": I hear you - this stuff can be tricky! Don't worry, let's work through it together.\n\n";
+                sentimentResponse = " I hear you - this stuff can be tricky! Don't worry, let's work through it together.\n\n";
             }
 
             //check for curious sentiment
             if (input.Contains("curious") || input.Contains("wondering"))
             {
-                sentimentResponse = botName + ": Great curiosity! Asking questions is the first step to staying safe online.\n\n";
+                sentimentResponse = " Great curiosity! Asking questions is the first step to staying safe online.\n\n";
             }
 
             //if a sentiment was detected, check if the user also mentioned a cybersecurity topic in the same message
@@ -632,7 +632,7 @@ namespace ST10475262_POE_PART_2
                 }
                 else
                 {
-                    tipResponse = botName + ": Here is a general tip: always keep your software updated, use strong passwords, and be cautious of suspicious links."; //general tip if no specific topic was found
+                    tipResponse = " Here is a general tip: always keep your software updated, use strong passwords, and be cautious of suspicious links."; //general tip if no specific topic was found
                 }
 
                 return sentimentResponse + tipResponse; //return the empathy message AND the automatic tip together
@@ -648,7 +648,7 @@ namespace ST10475262_POE_PART_2
                                    "Please rephrase your question. Try asking about passwords, phishing, or malware.",
                                    "Try asking about a cybersecurity topic. Type 'help' to see what I can assist with." };
 
-            return botName + ": " + responses[rand.Next(responses.Length)]; //selects a random default response from the array
+            return " " + responses[rand.Next(responses.Length)]; //selects a random default response from the array
         }
 
 
@@ -663,7 +663,7 @@ namespace ST10475262_POE_PART_2
                     name = " " + memory["name"]; //retrieve their name from memory
                 }
 
-                return "EXIT|" + botName + ": Goodbye" + name + "! Stay safe online."; //EXIT| is a prefix the form checks for to disable the input box
+                return "EXIT|" + " Goodbye" + name + "! Stay safe online."; //EXIT| is a prefix the form checks for to disable the input box
             }
             return ""; //return empty string if keyword not found
         }
