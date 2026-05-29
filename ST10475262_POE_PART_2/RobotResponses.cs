@@ -13,7 +13,10 @@ namespace ST10475262_POE_PART_2
     {
         static Random rand = new Random();//global randomizer for responses
         static string botName = "Cypherr: "; //global variable to store the bot's name
+
         public static Dictionary<string, string> memory = new Dictionary<string, string>(); //stores things the bot remembers about the user
+        public static string lastTopic = ""; //used for conversational flow
+
 
         public static string Hello(string input) //method to handle user greetings
         {
@@ -31,6 +34,8 @@ namespace ST10475262_POE_PART_2
                                        "hey" + name + "! Let's talk cybersecurity!!",
                                        "hello" + name + "! Hope you're doing great! Ready to talk about cybersecurity?" };
 
+                lastTopic = "greeting"; //update lastTopic
+
                 return botName + ": " + responses[rand.Next(responses.Length)]; //selects a random response from the array
             }
             return ""; //return an empty string to signal that this method did not match - the main form checks for empty string
@@ -40,7 +45,7 @@ namespace ST10475262_POE_PART_2
         {
             if (input.Contains("how are you") || input.Contains("how's it going") || input.Contains("how are you doing"))
             {
-                Console.ForegroundColor = ConsoleColor.Cyan;
+                
 
                 System.Threading.Thread.Sleep(1000);//a slight delay before the chatbot responds
 
@@ -51,8 +56,8 @@ namespace ST10475262_POE_PART_2
                                      "Doing great! Ready to talk about cybersecurity?",
                                      "I'm good! How can I help you stay safe online?"};
 
+                lastTopic = "greeting"; //update lastTopic
 
-                Console.ResetColor();
                 return botName + ": " + responses[rand.Next(responses.Length)];
             }
             return "";
@@ -62,7 +67,7 @@ namespace ST10475262_POE_PART_2
         {
             if (input.Contains("purpose") || input.Contains("what do you do") || input.Contains("what can you do"))
             {
-                Console.ForegroundColor = ConsoleColor.Cyan;
+                
 
                 System.Threading.Thread.Sleep(1000);//a slight delay before the chatbot responds
 
@@ -76,7 +81,7 @@ namespace ST10475262_POE_PART_2
 
                 
 
-                Console.ResetColor();
+                
                 return botName + ": " + responses[rand.Next(responses.Length)];
             }
             return "";
@@ -86,7 +91,7 @@ namespace ST10475262_POE_PART_2
         {
             if (input.Contains("what can i ask") || input.Contains("help with") || input.Contains("help"))
             {
-                Console.ForegroundColor = ConsoleColor.Cyan;
+                
 
                 System.Threading.Thread.Sleep(1000);//a slight delay before the chatbot responds
 
@@ -94,7 +99,7 @@ namespace ST10475262_POE_PART_2
                                   "\t\t\t\t HELP\n" +
                                   "=========================================================================================");
 
-                Console.ResetColor();
+                
                 return botName + ": " + "You can ask me about passwords, password managers, 2FA(Two - Factor Authentication),\n" +
                                   "phishing, malware, antiviruses, social engrinnering, data privacy and safe browsing.";
             }
@@ -105,7 +110,7 @@ namespace ST10475262_POE_PART_2
         {
             if (input.Contains("password") || input.Contains("password safety"))//method to respond to password safety
             {
-                Console.ForegroundColor = ConsoleColor.Cyan;
+                
 
                 System.Threading.Thread.Sleep(1000); //a slight delay before the chatbot responds
 
@@ -134,7 +139,7 @@ namespace ST10475262_POE_PART_2
 
                 
 
-                Console.ResetColor();
+                
                 return botName + ": " + responses[rand.Next(responses.Length)];
             }
             return "";
@@ -144,7 +149,7 @@ namespace ST10475262_POE_PART_2
         {
             if (input.Contains("password manager"))
             {
-                Console.ForegroundColor = ConsoleColor.Cyan;
+                
 
                 System.Threading.Thread.Sleep(1000);
 
@@ -168,7 +173,7 @@ namespace ST10475262_POE_PART_2
 
                 
 
-                Console.ResetColor();
+                
                 return botName + ": " + responses[rand.Next(responses.Length)];
             }
             return "";
@@ -178,7 +183,7 @@ namespace ST10475262_POE_PART_2
         {
             if (input.Contains("2fa") || input.Contains("two factor") || input.Contains("two-factor"))
             {
-                Console.ForegroundColor = ConsoleColor.Cyan;
+                
 
                 System.Threading.Thread.Sleep(1000);
 
@@ -201,7 +206,7 @@ namespace ST10475262_POE_PART_2
 
                 
 
-                Console.ResetColor();
+                
                 return botName + ": " + responses[rand.Next(responses.Length)];
             }
             return "";
@@ -211,7 +216,7 @@ namespace ST10475262_POE_PART_2
         {
             if (input.Contains("phishing"))
             {
-                Console.ForegroundColor = ConsoleColor.Cyan;
+                
 
                 System.Threading.Thread.Sleep(1000);
 
@@ -233,7 +238,7 @@ namespace ST10475262_POE_PART_2
 
                 
 
-                Console.ResetColor();
+                
                 return botName + ": " + responses[rand.Next(responses.Length)];
             }
             return "";
@@ -243,7 +248,7 @@ namespace ST10475262_POE_PART_2
         {
             if (input.Contains("malware") || input.Contains("virus"))
             {
-                Console.ForegroundColor = ConsoleColor.Cyan;
+                
 
                 System.Threading.Thread.Sleep(1000);
 
@@ -267,7 +272,7 @@ namespace ST10475262_POE_PART_2
 
                 
 
-                Console.ResetColor();
+                
                 return botName + ": " + responses[rand.Next(responses.Length)];
             }
             return "";
@@ -277,7 +282,7 @@ namespace ST10475262_POE_PART_2
         {
             if (input.Contains("antivirus"))
             {
-                Console.ForegroundColor = ConsoleColor.Cyan;
+                
 
                 System.Threading.Thread.Sleep(1000);
 
@@ -299,7 +304,7 @@ namespace ST10475262_POE_PART_2
 
                 
 
-                Console.ResetColor();
+                
                 return botName + ": " + responses[rand.Next(responses.Length)];
             }
             return "";
@@ -309,7 +314,7 @@ namespace ST10475262_POE_PART_2
         {
             if (input.Contains("social engineering"))
             {
-                Console.ForegroundColor = ConsoleColor.Cyan;
+                
 
                 System.Threading.Thread.Sleep(1000);
 
@@ -334,7 +339,7 @@ namespace ST10475262_POE_PART_2
 
                 
 
-                Console.ResetColor();
+                
                 return botName + ": " + responses[rand.Next(responses.Length)];
             }
             return "";
@@ -344,7 +349,7 @@ namespace ST10475262_POE_PART_2
         {
             if (input.Contains("data privacy") || input.Contains("privacy"))
             {
-                Console.ForegroundColor = ConsoleColor.Cyan;
+                
 
                 System.Threading.Thread.Sleep(1000);
 
@@ -366,7 +371,7 @@ namespace ST10475262_POE_PART_2
 
                 
 
-                Console.ResetColor();
+                
                 return botName + ": " + responses[rand.Next(responses.Length)];
             }
             return "";
@@ -377,7 +382,7 @@ namespace ST10475262_POE_PART_2
         {
             if (input.Contains("safe browsing") || input.Contains("browse safely")) //method to respond to safely browsing the internet
             {
-                Console.ForegroundColor = ConsoleColor.Cyan;
+                
 
                 System.Threading.Thread.Sleep(1000);
 
@@ -399,7 +404,7 @@ namespace ST10475262_POE_PART_2
 
                 
 
-                Console.ResetColor();
+                
                 return botName + ": " + responses[rand.Next(responses.Length)];
             }
             return "";
