@@ -128,7 +128,7 @@ namespace ST10475262_POE_PART_2
             messageLabel.Font = new Font("Segoe UI", 10f);
             messageLabel.ForeColor = Color.FromArgb(56, 189, 248); //cyan text for bot messages
             messageLabel.AutoSize = true;
-            messageLabel.MaximumSize = new Size((panelDisplay.ClientSize.Width / 2) + 100, 0); //limit width to roughly half the panel
+            messageLabel.MaximumSize = new Size(panelDisplay.ClientSize.Width - 40, 0); //limit width to roughly half the panel
             messageLabel.Margin = new Padding(4, 0, 4, 4);
 
             panelDisplay.Controls.Add(nameLabel);    //add name label to the flow panel
@@ -147,7 +147,7 @@ namespace ST10475262_POE_PART_2
             btnSend.Enabled = true;
             txtInput.Focus();
 
-            AddBotMessage("Before we begin, what is your name? (start with 'call me' or 'my name is')"); //type the name prompt with the typing effect
+            AddBotMessage("Before we begin, what is your name?"); //type the name prompt with the typing effect
         }
 
 
@@ -174,7 +174,7 @@ namespace ST10475262_POE_PART_2
             messageLabel.Font = new Font("Segoe UI", 10f);
             messageLabel.ForeColor = Color.FromArgb(74, 222, 128); //green text for user messages
             messageLabel.AutoSize = true;
-            messageLabel.MaximumSize = new Size((panelDisplay.ClientSize.Width / 2) + 100, 0);
+            messageLabel.MaximumSize = new Size(panelDisplay.ClientSize.Width - 40, 0);
             messageLabel.Margin = new Padding(4, 0, 4, 4);
 
             panelDisplay.Controls.Add(nameLabel);    //add to the flow panel

@@ -44,18 +44,19 @@
             panelDisplay.BackColor = Color.Black;
             panelDisplay.FlowDirection = FlowDirection.TopDown;
             panelDisplay.ForeColor = Color.White;
-            panelDisplay.Location = new Point(0, 188);
+            panelDisplay.Location = new Point(114, 188);
             panelDisplay.Name = "panelDisplay";
-            panelDisplay.Size = new Size(1112, 410);
+            panelDisplay.Size = new Size(878, 410);
             panelDisplay.TabIndex = 0;
             panelDisplay.WrapContents = false;
             panelDisplay.Paint += panelDisplay_Paint;
             // 
             // txtInput
             // 
-            txtInput.Location = new Point(12, 614);
+            txtInput.BackColor = SystemColors.InactiveCaption;
+            txtInput.Location = new Point(114, 614);
             txtInput.Name = "txtInput";
-            txtInput.Size = new Size(899, 27);
+            txtInput.Size = new Size(695, 27);
             txtInput.TabIndex = 1;
             txtInput.TextChanged += txtInput_TextChanged;
             txtInput.Enter += txtInput_Enter;
@@ -63,12 +64,13 @@
             // 
             // btnSend
             // 
-            btnSend.Location = new Point(932, 604);
+            btnSend.BackColor = Color.SteelBlue;
+            btnSend.Location = new Point(850, 604);
             btnSend.Name = "btnSend";
             btnSend.Size = new Size(130, 47);
             btnSend.TabIndex = 2;
             btnSend.Text = "SEND";
-            btnSend.UseVisualStyleBackColor = true;
+            btnSend.UseVisualStyleBackColor = false;
             btnSend.Click += button1_Click;
             // 
             // pictureBox1
@@ -94,6 +96,7 @@
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
+            BackColor = Color.SteelBlue;
             ClientSize = new Size(1102, 673);
             Controls.Add(pictureBox2);
             Controls.Add(pictureBox1);
